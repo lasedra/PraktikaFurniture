@@ -33,9 +33,7 @@ namespace PraktikaFurniture
 
         public UpdaterWindow()
         {
-            InitializeComponent(); //TODO: невозможно закрыть, если обновлений нет
-            //Loaded += ToolWindow_Loaded;
-
+            InitializeComponent(); 
             if (updater.Releases.Result.Any())
                 VersionsComboBox.ItemsSource = updater.Releases.Result;
             else
@@ -52,9 +50,17 @@ namespace PraktikaFurniture
             if (VersionsComboBox.SelectedItem != null)
             {
                 var releaseToDownload = ((Release)VersionsComboBox.SelectedItem);
+                TagNameTextBox.Text += releaseToDownload.TagName;
+                NoteTextBox.Text = releaseToDownload.Body;
+
                 if (releaseToDownload.TagName.Trim() != currVer)
                 {
                     ToolWindow_Loaded(sender, e);
+                    MessageStackPanel.Visibility = Visibility.Hidden;
+                    MessageDockPanel.Visibility = Visibility.Hidden;
+                    DownloadStackPanel.Visibility = Visibility.Visible;
+                    DownloadProgressBar.Visibility = Visibility.Visible;
+
                     using (WebClient client = new WebClient())
                     {
                         client.Headers.Add("Authorization", $"Bearer {updater.GitClient.Credentials.GetToken()}");
@@ -71,6 +77,7 @@ namespace PraktikaFurniture
                         client.DownloadFileAsync(new Uri(releaseToDownload.Assets[0].BrowserDownloadUrl), $"newUpdate.exe");
                     }
                     //updater.ApplyNewUpdateCmd();
+                    // TODO: Добавить миграции и создание БД
                 }
                 else { MessageBox.Show($"bruh...", "", MessageBoxButton.OK, MessageBoxImage.Question); }
             }

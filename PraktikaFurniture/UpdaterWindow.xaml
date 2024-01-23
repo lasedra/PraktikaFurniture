@@ -33,10 +33,10 @@
             <Button Margin="3" Name="UpdateBttn" HorizontalAlignment="Right" Width="70" Click="UpdateBttn_Click">Update</Button>
         </DockPanel>
 
-        <StackPanel Margin="10" Name="DownloadPanel" Visibility="Hidden">
+        <StackPanel Margin="10" Name="DownloadStackPanel" Visibility="Hidden">
             <TextBlock Name="TagNameTextBox"  Text="Загрузка обновления: " FontWeight="Bold"/>
             <TextBlock Name="NoteTextBox" Margin="0 5 0 0" FontStyle="Italic"/>
         </StackPanel>
-        <ProgressBar Visibility="Hidden" Name="DownloadProgressBar" Grid.Row="1" Width="370" Margin="5"/>
+        <ProgressBar Visibility="Hidden" Name="DownloadProgressBar" Grid.Row="1" Width="370" Margin="8"/>
     </Grid>
 </Window>
