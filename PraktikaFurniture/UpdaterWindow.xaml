@@ -1,0 +1,42 @@
+﻿<Window x:Class="PraktikaFurniture.UpdaterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PraktikaFurniture"
+        mc:Ignorable="d"
+        Title="UpdaterWindow" Height="150" Width="400"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Margin="10" Name="MessageStackPanel">
+            <TextBlock Name="AvailableVersionsTextBlock" Text="New versions are available!" FontWeight="Bold"/>
+            <TextBlock Name="MessageTextBlock" 
+                       Text="Choose an available version to update the app. Click the button. Wait for a downloading and then the app will be restarted automatcally to apply new update." TextWrapping="Wrap" Margin="0 5 0 0"/>
+        </StackPanel>
+        <DockPanel Margin="3" Height="30" Grid.Row="1" Name="MessageDockPanel">
+            <ComboBox Margin="3" Name="VersionsComboBox" Width="295">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="{Binding TagName}" FontWeight="Bold" />
+                            <TextBlock Text="{Binding Body}" FontStyle="Italic" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <Button Margin="3" Name="UpdateBttn" HorizontalAlignment="Right" Width="70" Click="UpdateBttn_Click">Update</Button>
+        </DockPanel>
+
+        <StackPanel Margin="10" Name="DownloadPanel" Visibility="Hidden">
+            <TextBlock Name="TagNameTextBox"  Text="Загрузка обновления: " FontWeight="Bold"/>
+            <TextBlock Name="NoteTextBox" Margin="0 5 0 0" FontStyle="Italic"/>
+        </StackPanel>
+        <ProgressBar Visibility="Hidden" Name="DownloadProgressBar" Grid.Row="1" Width="370" Margin="5"/>
+    </Grid>
+</Window>

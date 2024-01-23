@@ -1,0 +1,52 @@
+﻿<Page x:Class="PraktikaFurniture.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:PraktikaFurniture"
+      mc:Ignorable="d"
+      Height="620" 
+      Width="800"
+      MinHeight="620" 
+      MinWidth="800"
+      Title="MainPage">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition  Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="0">
+            <TextBlock Text="Найти" Margin="10" FontSize="16" FontWeight="Medium" VerticalAlignment="Center"/>
+            <TextBox Width="150" VerticalContentAlignment="Center" Height="30" Name="SearchTextBox" TextChanged="SearchTextBox_TextChanged"/>
+            <StackPanel VerticalAlignment="Center" Margin="15 0 0 0">
+                <RadioButton Name="CheapRadioBttn" Content="Сначала дешевле" Checked="CheapRadioBttn_Checked"/>
+                <RadioButton Name="PriceyRadioBttn" Content="Сначала дороже" Checked="PriceyRadioBttn_Checked"/>
+            </StackPanel>
+            <Button Name="DropFilters" Click="DropFilters_Click" Content="Сбросить фильтры" Margin="20 15 0 15" Background="DarkBlue" Foreground="White" FontWeight="Bold"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1">
+            <DockPanel Width="770" Height="40" >
+                <TextBlock Margin="5" Text="Наименование" FontWeight="Bold" FontSize="18"/>
+                <TextBlock Margin="5" Text="Артикул" FontWeight="Bold" FontSize="18"/>
+                <TextBlock Margin="5" Text="Цена (руб.)" FontWeight="Bold" FontSize="18" HorizontalAlignment="Right"/>
+            </DockPanel>
+            <ListView x:Name="ListViewProducts" Grid.Row="1" Width="800" Height="510">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Cursor="Hand">
+                            <DockPanel Margin="5" Width="750">
+                                <TextBlock Margin="5" Text="{Binding ProductName}" FontSize="18"/>
+                                <TextBlock Margin="5" Text="{Binding ProductCode}" FontSize="18"/>
+                                <TextBlock Margin="5" Text="{Binding Price}" FontSize="18" HorizontalAlignment="Right"/>
+                            </DockPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ListView>
+            <StackPanel HorizontalAlignment="Center" Name="EmptyPanel"  VerticalAlignment="Center" Grid.Row="1">
+                <TextBlock Text="Ничего не найдено" FontSize="40" FontWeight="Bold"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>
