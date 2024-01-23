@@ -30,7 +30,7 @@ namespace PraktikaFurniture
             }
         }
 
-        public bool IsConnectionOk()
+        public static bool IsConnectionOk()
         {
             try
             {

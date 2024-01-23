@@ -1,6 +1,7 @@
 ﻿using Octokit;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Windows;
@@ -32,7 +33,18 @@ namespace PraktikaFurniture
 
         public UpdaterWindow()
         {
-            InitializeComponent();
+            InitializeComponent(); //TODO: невозможно закрыть, если обновлений нет
+            //Loaded += ToolWindow_Loaded;
+
+            if (updater.Releases.Result.Any())
+                VersionsComboBox.ItemsSource = updater.Releases.Result;
+            else
+            {
+                AvailableVersionsTextBlock.Text = "No any available version(";
+                MessageTextBlock.Text = "Stay tuned and follow my GitHub!";
+                VersionsComboBox.IsEnabled = false;
+                UpdateBttn.IsEnabled = false;
+            }
         }
 
         private void UpdateBttn_Click(object sender, RoutedEventArgs e)
@@ -42,6 +54,7 @@ namespace PraktikaFurniture
                 var releaseToDownload = ((Release)VersionsComboBox.SelectedItem);
                 if (releaseToDownload.TagName.Trim() != currVer)
                 {
+                    ToolWindow_Loaded(sender, e);
                     using (WebClient client = new WebClient())
                     {
                         client.Headers.Add("Authorization", $"Bearer {updater.GitClient.Credentials.GetToken()}");
@@ -57,7 +70,7 @@ namespace PraktikaFurniture
 
                         client.DownloadFileAsync(new Uri(releaseToDownload.Assets[0].BrowserDownloadUrl), $"newUpdate.exe");
                     }
-                    updater.ApplyNewUpdateCmd();
+                    //updater.ApplyNewUpdateCmd();
                 }
                 else { MessageBox.Show($"bruh...", "", MessageBoxButton.OK, MessageBoxImage.Question); }
             }

@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v7.0": {
-      "PraktikaFurniture/1.0.0": {
+      "PraktikaFurniture/1.0.0.0": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "7.0.15",
           "Microsoft.EntityFrameworkCore.Tools": "7.0.15",
@@ -244,7 +244,7 @@
     }
   },
   "libraries": {
-    "PraktikaFurniture/1.0.0": {
+    "PraktikaFurniture/1.0.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
