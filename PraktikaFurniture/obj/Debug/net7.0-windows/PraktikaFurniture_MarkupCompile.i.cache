@@ -1,5 +1,5 @@
 ﻿PraktikaFurniture
-0.0.0.0
+1.0.0.0
 
 winexe
 C#
@@ -12,9 +12,9 @@ TRACE;DEBUG;NET;NET7_0;NETCOREAPP
 C:\Users\.eski\source\repos\PraktikaFurniture\PraktikaFurniture\App.xaml
 3-1482456106
 
-10-1583558729
-213768083911
+13-254826166
+231-2051816434
 MainPage.xaml;MainWindow.xaml;UpdaterWindow.xaml;
 
-False
+True
 

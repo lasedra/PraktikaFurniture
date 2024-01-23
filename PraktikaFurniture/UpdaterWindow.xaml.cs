@@ -1,11 +1,9 @@
 ﻿using Octokit;
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Windows;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace PraktikaFurniture
 {
@@ -33,7 +31,7 @@ namespace PraktikaFurniture
 
         public UpdaterWindow()
         {
-            InitializeComponent(); 
+            InitializeComponent();
             if (updater.Releases.Result.Any())
                 VersionsComboBox.ItemsSource = updater.Releases.Result;
             else
@@ -76,8 +74,7 @@ namespace PraktikaFurniture
 
                         client.DownloadFileAsync(new Uri(releaseToDownload.Assets[0].BrowserDownloadUrl), $"newUpdate.exe");
                     }
-                    //updater.ApplyNewUpdateCmd();
-                    // TODO: Добавить миграции и создание БД
+                    updater.ApplyNewUpdateCmd();
                 }
                 else { MessageBox.Show($"bruh...", "", MessageBoxButton.OK, MessageBoxImage.Question); }
             }

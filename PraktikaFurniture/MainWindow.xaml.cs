@@ -1,8 +1,5 @@
-﻿using System.Diagnostics;
-using System;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Windows;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace PraktikaFurniture
 {
