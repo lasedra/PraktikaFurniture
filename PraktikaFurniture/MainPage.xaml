@@ -32,6 +32,11 @@
                 <TextBlock Margin="5" Text="Цена (руб.)" FontWeight="Bold" FontSize="18" HorizontalAlignment="Right"/>
             </DockPanel>
             <ListView x:Name="ListViewProducts" Grid.Row="1" Width="800" Height="510">
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Cформировать возвратную накладную" Click="MenuItem_Click"/>
+                    </ContextMenu>
+                </ListView.ContextMenu>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border Cursor="Hand">
