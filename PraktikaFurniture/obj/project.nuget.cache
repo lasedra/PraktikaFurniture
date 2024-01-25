@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "S80gDe7dskBnqUL7rnLKt25iP0IxUR/Mfd0bYlIlwvK49/8CwpxYrkSJSBZPyXSz//eJmAQVyr0ffTuAEf8fuw==",
+  "dgSpecHash": "Rxuo/1kNXLbGJG/EFk/6dV/ur080Dck8HG6JW5UXjmH+Ndhh4sflpn1RZnglye/HS3uJErksEsYHIY8NXuMo2Q==",
   "success": true,
   "projectFilePath": "C:\\Users\\.eski\\source\\repos\\PraktikaFurniture\\PraktikaFurniture\\PraktikaFurniture.csproj",
   "expectedPackageFiles": [
@@ -52,10 +52,7 @@
     "C:\\Users\\.eski\\.nuget\\packages\\system.drawing.common\\5.0.2\\system.drawing.common.5.0.2.nupkg.sha512",
     "C:\\Users\\.eski\\.nuget\\packages\\system.io.packaging\\4.5.0\\system.io.packaging.4.5.0.nupkg.sha512",
     "C:\\Users\\.eski\\.nuget\\packages\\system.text.encodings.web\\7.0.0\\system.text.encodings.web.7.0.0.nupkg.sha512",
-    "C:\\Users\\.eski\\.nuget\\packages\\system.text.json\\7.0.0\\system.text.json.7.0.0.nupkg.sha512",
-    "C:\\Users\\.eski\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x86\\7.0.9\\microsoft.netcore.app.runtime.win-x86.7.0.9.nupkg.sha512",
-    "C:\\Users\\.eski\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x86\\7.0.9\\microsoft.windowsdesktop.app.runtime.win-x86.7.0.9.nupkg.sha512",
-    "C:\\Users\\.eski\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x86\\7.0.9\\microsoft.aspnetcore.app.runtime.win-x86.7.0.9.nupkg.sha512"
+    "C:\\Users\\.eski\\.nuget\\packages\\system.text.json\\7.0.0\\system.text.json.7.0.0.nupkg.sha512"
   ],
   "logs": []
 }
