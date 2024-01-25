@@ -10,7 +10,7 @@ using System.IO;
 using Xceed.Document.NET;
 using System.Net.Mail;
 using System.Net;
-using System.Xml.Linq;
+using System.Reflection;
 
 namespace PraktikaFurniture
 {
@@ -75,7 +75,6 @@ namespace PraktikaFurniture
             }
             catch (Exception exс) { MessageBox.Show(exс.Message); }
         }
-
         private static void SendMessage(string exception)
         {
             string smtpServer = "smtp.mail.ru";
@@ -112,11 +111,7 @@ namespace PraktikaFurniture
         {
             try
             {
-                string currentDirectory = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName),
-                            fourLevelsUp = Path.Combine(currentDirectory, "..\\..\\.."),
-                                absolutePath = Path.GetFullPath(fourLevelsUp);
-
-                using (var templateDoc = DocX.Load($@"{currentDirectory}\doc-template.docx"))
+                using (var templateDoc = DocX.Load(Assembly.GetExecutingAssembly().GetManifestResourceStream("PraktikaFurniture.doc-template.docx")))
                 {
                     var rand = new Random(); string docNumber = rand.Next(100, 1000).ToString();
                     ReplaceKeywordWithValue(templateDoc, "[doc-number]", docNumber);

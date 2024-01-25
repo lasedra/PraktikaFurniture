@@ -14,10 +14,10 @@
     <Grid>
         <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Grid.Row = "1"/>
         <StackPanel Background="AliceBlue" Grid.Row="0"></StackPanel>
-        <TextBlock Text="Furniture"
-                   HorizontalAlignment = "Left" VerticalAlignment="Center" Foreground="DarkBlue" FontWeight="Bold" FontSize="40" Margin="30"/>
-        <TextBlock Text="Version: " Name="VersionTextBlock"
-                   HorizontalAlignment = "Right" VerticalAlignment="Top" FontSize="18" Margin="10" MouseLeftButtonDown="VersionTextBlock_MouseLeftButtonDown" Cursor="Hand"/>
+        <TextBlock Text="Furniture" FontWeight="Black"
+                   HorizontalAlignment = "Left" VerticalAlignment="Center" Foreground="DarkBlue" FontSize="40" Margin="30"/>
+        <TextBlock Text="Version: " Name="VersionTextBlock" FontWeight="Thin" Foreground="DarkBlue"
+                   HorizontalAlignment = "Right" VerticalAlignment="Center" FontSize="18" Margin="10" MouseLeftButtonDown="VersionTextBlock_MouseLeftButtonDown" Cursor="Hand"/>
         <Grid.RowDefinitions>
             <RowDefinition Height= "100"/>
             <RowDefinition Height= "*"/>
