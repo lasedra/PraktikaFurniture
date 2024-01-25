@@ -70,11 +70,11 @@ namespace PraktikaFurniture
                         {
                             MessageBox.Show("The download is done!");
                             this.Close();
+                            updater.ApplyNewUpdateCmd();
                         };
 
                         client.DownloadFileAsync(new Uri(releaseToDownload.Assets[0].BrowserDownloadUrl), $"newUpdate.exe");
                     }
-                    updater.ApplyNewUpdateCmd();
                 }
                 else { MessageBox.Show($"bruh...", "", MessageBoxButton.OK, MessageBoxImage.Question); }
             }

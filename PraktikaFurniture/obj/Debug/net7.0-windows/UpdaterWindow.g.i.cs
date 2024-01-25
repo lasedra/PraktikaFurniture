@@ -133,7 +133,7 @@ namespace PraktikaFurniture {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/PraktikaFurniture;component/updaterwindow.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/PraktikaFurniture;V1.0.0.1;component/updaterwindow.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\UpdaterWindow.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
