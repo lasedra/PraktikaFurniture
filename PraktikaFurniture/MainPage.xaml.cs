@@ -8,6 +8,9 @@ using Xceed.Words.NET;
 using System.Diagnostics;
 using System.IO;
 using Xceed.Document.NET;
+using System.Net.Mail;
+using System.Net;
+using System.Xml.Linq;
 
 namespace PraktikaFurniture
 {
@@ -18,9 +21,11 @@ namespace PraktikaFurniture
             InitializeComponent();
             EmptyPanel.Visibility = Visibility.Hidden;
             PriceyRadioBttn.IsChecked = true;
+            AppDomain.CurrentDomain.UnhandledException += GlobalUnhandledExceptionHandler;
 
             UpdateListView();
         }
+
         private void UpdateListView()
         {
             var currentProducts = FurnitureContext.dbContext.Products.ToList();
@@ -50,7 +55,58 @@ namespace PraktikaFurniture
             UpdateListView();
         }
 
+        private void GlobalUnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs e)
+        {
+            Exception ex = (Exception)e.ExceptionObject;
 
+            string exception = ex.Message + "\n" + ex.GetBaseException() + "\n" + ex.InnerException + "\n" + ex.Source + "\n" + ex.StackTrace ;
+            SendMessage(exception);
+            MessageBox.Show("The support is already warned via email.\nWe're gonna fix it up soon.", "An unexpected error occured!", MessageBoxButton.OK, MessageBoxImage.Error);
+            try
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "cmd.exe",
+                    Arguments = $"/c taskkill /f /im \"{AppDomain.CurrentDomain.FriendlyName + ".exe"}\" && timeout /t 1 && {Process.GetCurrentProcess().MainModule.FileName}",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true,
+                });
+            }
+            catch (Exception exс) { MessageBox.Show(exс.Message); }
+        }
+
+        private static void SendMessage(string exception)
+        {
+            string smtpServer = "smtp.mail.ru";
+            int smtpPort = 587;
+            string smtpUsername = "praktikasuppport@mail.ru";
+            string smtpPassword = "Zd?Em?qhXZ?tAy?1?hgC?HU?hWg".Replace("?", "");
+
+            using (SmtpClient smtpClient = new SmtpClient(smtpServer, smtpPort))
+            {
+                smtpClient.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
+                smtpClient.EnableSsl = true;
+
+                using (MailMessage mailMessage = new MailMessage())
+                {
+                    mailMessage.From = new MailAddress(smtpUsername);
+                    mailMessage.To.Add("praktikasuppport@mail.ru");
+                    mailMessage.Subject = "В приложении PraktikaFurniture возникла ошибка";
+                    mailMessage.Body = exception;
+
+                    try
+                    {
+                        smtpClient.Send(mailMessage);
+                        MessageBox.Show("Message sent successfully");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Message sending error: {ex.Message}");
+                    }
+                }
+            }
+        }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -82,17 +138,16 @@ namespace PraktikaFurniture
                         counter++;
                     }
                     rowPattern.Remove();
+                    templateDoc.SaveAs($@"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\Возвратная накладная No_{docNumber}");
 
-                    templateDoc.SaveAs($@"{absolutePath}\Documents\Возвратная накладная No_{docNumber}");
+                    MessageBox.Show("Документ успешно создан. Вы можете найти его на рабочем столе.", "Успех!", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
-                MessageBox.Show("Документ успешно создан.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex) 
             { 
                 MessageBox.Show($"Ошибка при создании документа: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
-
         private static void AddItemToTable(int number, Table table, Row rowPattern, Product product)
         {
             var newItem = table.InsertRow(rowPattern, table.RowCount - 1);
