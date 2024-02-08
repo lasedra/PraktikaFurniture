@@ -6,15 +6,18 @@ using System.Data;
 using System;
 using Xceed.Words.NET;
 using System.Diagnostics;
-using System.IO;
 using Xceed.Document.NET;
 using System.Net.Mail;
 using System.Net;
 using System.Reflection;
+using System.Collections.Generic;
+using System.Windows.Media.Imaging;
+using Octokit;
+using System.IO;
 
 namespace PraktikaFurniture
 {
-    public partial class MainPage : Page
+    public partial class MainPage : System.Windows.Controls.Page
     {
         public MainPage()
         {
@@ -23,18 +26,29 @@ namespace PraktikaFurniture
             PriceyRadioBttn.IsChecked = true;
             AppDomain.CurrentDomain.UnhandledException += GlobalUnhandledExceptionHandler;
 
+            BitmapImage image = new BitmapImage();
+            
+            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("PraktikaFurniture.myphoto.jpeg")) 
+            {
+                image.BeginInit();
+                image.StreamSource = stream;
+                image.EndInit();
+                testImage.Source = image;
+            };
+
             UpdateListView();
         }
 
+        // CRUD
         private void UpdateListView()
         {
-            var currentProducts = FurnitureContext.dbContext.Products.ToList();
+            List<Product> currentProducts = FurnitureContext.dbContext.Products.ToList();
 
             if (string.IsNullOrWhiteSpace(SearchTextBox.Text) == true)
                 SearchTextBox.Text = "";
             else
                 currentProducts = currentProducts.Where(u => u.ProductName.ToLower().Contains(SearchTextBox.Text.ToLower()) ||
-                                                                            u.ProductCode.ToString().Contains(SearchTextBox.Text.ToLower())).ToList();
+                                                             u.ProductCode.ToString().Contains(SearchTextBox.Text.ToLower())).ToList();
 
             if (CheapRadioBttn.IsChecked == true)
                 currentProducts = currentProducts.OrderBy(p => p.Price).ToList();
@@ -55,12 +69,16 @@ namespace PraktikaFurniture
             UpdateListView();
         }
 
+        // Exception handler
         private void GlobalUnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs e)
         {
             Exception ex = (Exception)e.ExceptionObject;
-
-            string exception = ex.Message + "\n" + ex.GetBaseException() + "\n" + ex.InnerException + "\n" + ex.Source + "\n" + ex.StackTrace ;
-            SendMessage(exception);
+            string exception = "Message: " + ex.Message
+                             + "\nBase exception: " + ex.GetBaseException()
+                             + "\nInner exception: " + ex.InnerException
+                             + "\nSource: " + ex.Source
+                             + "\nStack trace: " + ex.StackTrace;
+            SendMessage(exception, ex);
             MessageBox.Show("The support is already warned via email.\nWe're gonna fix it up soon.", "An unexpected error occured!", MessageBoxButton.OK, MessageBoxImage.Error);
             try
             {
@@ -75,7 +93,7 @@ namespace PraktikaFurniture
             }
             catch (Exception exс) { MessageBox.Show(exс.Message); }
         }
-        private static void SendMessage(string exception)
+        private void SendMessage(string exceptionMessage, Exception exc)
         {
             string smtpServer = "smtp.mail.ru";
             int smtpPort = 587;
@@ -91,8 +109,8 @@ namespace PraktikaFurniture
                 {
                     mailMessage.From = new MailAddress(smtpUsername);
                     mailMessage.To.Add("praktikasuppport@mail.ru");
-                    mailMessage.Subject = "В приложении PraktikaFurniture возникла ошибка";
-                    mailMessage.Body = exception;
+                    mailMessage.Subject = $"Ошибка типа: {exc.GetType().FullName}";
+                    mailMessage.Body = exceptionMessage;
 
                     try
                     {
@@ -107,40 +125,45 @@ namespace PraktikaFurniture
             }
         }
 
+        // Report creating feature
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
+            //throw new NotImplementedException();
             try
             {
-                using (var templateDoc = DocX.Load(Assembly.GetExecutingAssembly().GetManifestResourceStream("PraktikaFurniture.doc-template.docx")))
+                if(ListViewProducts.SelectedItems != null && ListViewProducts.SelectedItem != null)
                 {
-                    var rand = new Random(); string docNumber = rand.Next(100, 1000).ToString();
-                    ReplaceKeywordWithValue(templateDoc, "[doc-number]", docNumber);
-                    ReplaceKeywordWithValue(templateDoc, "[at-date]", DateTime.UtcNow.ToString("f"));
-
-                    int sumQuant = 0;
-                    foreach (var item in ListViewProducts.SelectedItems) sumQuant += (item as Product).Quantity;
-                    ReplaceKeywordWithValue(templateDoc, "[sum-quantity]", sumQuant.ToString());
-                    decimal sumPrice = 0;
-                    foreach (var item in ListViewProducts.SelectedItems) sumPrice += (item as Product).Price;
-                    ReplaceKeywordWithValue(templateDoc, "[sum-price]", sumPrice.ToString());
-
-                    var reportTable = templateDoc.Tables[1];
-                    var rowPattern = reportTable.Rows[1];
-                    int counter = 1;
-                    foreach(var item in ListViewProducts.SelectedItems)
+                    using (var templateDoc = DocX.Load(Assembly.GetExecutingAssembly().GetManifestResourceStream("PraktikaFurniture.doc-template.docx")))
                     {
-                        AddItemToTable(counter, reportTable, rowPattern, item as Product);
-                        counter++;
-                    }
-                    rowPattern.Remove();
-                    templateDoc.SaveAs($@"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\Возвратная накладная No_{docNumber}");
+                        var rand = new Random(); string docNumber = rand.Next(100, 1000).ToString();
+                        ReplaceKeywordWithValue(templateDoc, "[doc-number]", docNumber);
+                        ReplaceKeywordWithValue(templateDoc, "[at-date]", DateTime.UtcNow.ToString("f"));
 
-                    MessageBox.Show("Документ успешно создан. Вы можете найти его на рабочем столе.", "Успех!", MessageBoxButton.OK, MessageBoxImage.Information);
+                        int sumQuant = 0;
+                        foreach (var item in ListViewProducts.SelectedItems) sumQuant += (item as Product).Quantity;
+                        ReplaceKeywordWithValue(templateDoc, "[sum-quantity]", sumQuant.ToString());
+                        decimal sumPrice = 0;
+                        foreach (var item in ListViewProducts.SelectedItems) sumPrice += (item as Product).Price;
+                        ReplaceKeywordWithValue(templateDoc, "[sum-price]", sumPrice.ToString());
+
+                        var reportTable = templateDoc.Tables[1];
+                        var rowPattern = reportTable.Rows[1];
+                        int counter = 1;
+                        foreach (var item in ListViewProducts.SelectedItems)
+                        {
+                            AddItemToTable(counter, reportTable, rowPattern, item as Product);
+                            counter++;
+                        }
+                        rowPattern.Remove();
+                        templateDoc.SaveAs($@"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\Возвратная накладная No_{docNumber}");
+
+                        MessageBox.Show("Документ успешно создан. Вы можете найти его на рабочем столе.", "Успех!", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
                 }
             }
             catch (Exception ex) 
             { 
-                MessageBox.Show($"Ошибка при создании документа: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error); 
+                MessageBox.Show($"Ошибка при создании документа: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         private static void AddItemToTable(int number, Table table, Row rowPattern, Product product)

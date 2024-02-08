@@ -25,7 +25,8 @@
             <Button Name="DropFilters" Click="DropFilters_Click" Content="Сбросить фильтры" Margin="20 15 0 15" Background="DarkBlue" Foreground="White" FontWeight="Bold"/>
         </StackPanel>
 
-        <StackPanel Grid.Row="1">
+        <Image x:Name="testImage" Grid.Row="1"/>
+        <StackPanel Grid.Row="1" Visibility="Hidden">
             <DockPanel Width="770" Height="40" >
                 <TextBlock Margin="5" Text="Наименование" FontWeight="Bold" FontSize="18"/>
                 <TextBlock Margin="5" Text="Артикул" FontWeight="Bold" FontSize="18"/>

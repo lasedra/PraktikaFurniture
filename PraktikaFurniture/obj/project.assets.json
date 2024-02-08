@@ -3192,13 +3192,13 @@
     "C:\\Users\\.eski\\.nuget\\packages\\": {}
   },
   "project": {
-    "version": "1.0.0.1",
+    "version": "1.0.0.2",
     "restore": {
-      "projectUniqueName": "C:\\Users\\.eski\\source\\repos\\PraktikaFurniture\\PraktikaFurniture\\PraktikaFurniture.csproj",
+      "projectUniqueName": "C:\\Users\\.eski\\source\\repos\\Praktika\\PraktikaFurniture\\PraktikaFurniture\\PraktikaFurniture.csproj",
       "projectName": "PraktikaFurniture",
-      "projectPath": "C:\\Users\\.eski\\source\\repos\\PraktikaFurniture\\PraktikaFurniture\\PraktikaFurniture.csproj",
+      "projectPath": "C:\\Users\\.eski\\source\\repos\\Praktika\\PraktikaFurniture\\PraktikaFurniture\\PraktikaFurniture.csproj",
       "packagesPath": "C:\\Users\\.eski\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\.eski\\source\\repos\\PraktikaFurniture\\PraktikaFurniture\\obj\\",
+      "outputPath": "C:\\Users\\.eski\\source\\repos\\Praktika\\PraktikaFurniture\\PraktikaFurniture\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\.eski\\AppData\\Roaming\\NuGet\\NuGet.Config",

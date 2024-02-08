@@ -72,7 +72,6 @@ namespace PraktikaFurniture
                             this.Close();
                             updater.ApplyNewUpdateCmd();
                         };
-
                         client.DownloadFileAsync(new Uri(releaseToDownload.Assets[0].BrowserDownloadUrl), $"newUpdate.exe");
                     }
                 }

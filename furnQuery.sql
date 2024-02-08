@@ -1,13 +1,18 @@
--- Active: 1697616242142@@127.0.0.1@5432@Furniture
+-- Active: 1697616242142@@127.0.0.1@5432@ErrorsDB
+create DATABASE "Furniture";
+
+--Структура таблицы
 CREATE TABLE "Products" (
     "ProductID" uuid default gen_random_uuid() NOT NULL,
     "ProductName" VARCHAR(255) NOT NULL,
     "ProductCode" VARCHAR(20) UNIQUE NOT NULL,
     "Unit" VARCHAR(20) NOT NULL,
     "Quantity" INTEGER NOT NULL,
-    "Price" DECIMAL(10, 2) NOT NULL
+    "Price" DECIMAL(10, 2) NOT NULL,
+PRIMARY key("ProductID")
 );
 
+--Тестовые данные
 INSERT INTO "Products" ("ProductName", "ProductCode", "Unit", "Quantity", "Price")
 VALUES
     ('Стол', 'STL001', 'шт.', 10, 5000.00),
@@ -28,3 +33,17 @@ VALUES
     ('Пенал для одежды', 'WDR003', 'шт.', 8, 7500.00),
     ('Книжный шкаф', 'BKS006', 'шт.', 15, 6000.00),
     ('Письменный стол', 'WDS007', 'шт.', 10, 8500.00);
+
+CREATE DATABASE "ErrorsDB";
+
+--Структура таблицы
+create table "Error"(
+    "ErrorID" uuid default gen_random_uuid() NOT NULL,
+    "Date" timestamp with time zone not null,
+    "Priority" VARCHAR(255) not null,
+    "Subject" VARCHAR(255) not null,
+    "Message" VARCHAR not null,
+    "Status" VARCHAR(255) not null,
+    "FixLink" VARCHAR(255),
+PRIMARY key("ErrorID")
+);
